@@ -1,0 +1,100 @@
+\documentclass[12pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{indentfirst, setspace}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage[shortlabels]{enumitem}
+
+\onehalfspacing
+
+\usepackage{natbib}
+\bibliographystyle{plainnat}
+\setcitestyle{authoryear,open={(},close={)}}
+
+\hypersetup{
+  colorlinks   = true,
+  urlcolor     = blue,
+  linkcolor    = blue,
+  citecolor   = blue 
+}
+
+\title{Deterministic Optimal Control in Discrete Time: Literature Review}
+\author{Pauline Corblet}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{center}
+  PRELIMINARY AND INCOMPLETE
+\end{center}
+
+The problem at hand is of the form
+\begin{equation} \label{OC} \tag{OC}
+  \sup_{(x_t)_t, (u_t)_t} \sum_{t=0}^{\infty} f_t(x_t, u_t) \text{ s.t } x_{t+1} = g_t(x_t,u_t), \, x_0 \text{ given}
+\end{equation}
+
+where $(x_t, u_t) \in W_t \subset X \times U$ for some metric spaces $X$ and $U$. This is a deterministic problem in infinite dimension. It often appears in economics in optimal growth problems.
+
+\bigskip
+
+This literature review aims at covering the following:
+\begin{enumerate}
+  \item \label{enum_sol} Under what conditions does problem \eqref{OC} have a solution?
+  \item \label{enum_DP} Can we reformulate this problem with dynamic programming? What does it buy us?
+  \item \label{enum_DT} Does duality theory apply to \eqref{OC}?
+\end{enumerate}
+
+\section{Existence of solutions}
+
+From \cite{keerthiExistenceTheoremDiscretetime1985}, if \eqref{OC} satisfies the following $\forall t$:
+\begin{enumerate}[(a)]
+  \item $W_t$ is a closed subset of $X \times U$. 
+  \item \label{cond_constr} $g_t: W_t \to \mathbb{R}$ is continuous.
+  \item \label{cond_obj} $f_t: W_t \to \mathbb{R}$ is lowersemicontinuous and there exists a sequence of real numbers $(\alpha_t)_t$ such that $| \sum_t \alpha_t | < +\infty$ and $f_t(x,u) \geq \alpha_t$ whenever $(x,u) \in W_t$.
+  \item Given any compact set $P \subset X$, the set $S_t(P) = \left\{(x,u) \in W_t | x \in P\right\}$ is compact in $X \times U$.
+  \item There exists an adminissible sequence pair with finite objective function. 
+\end{enumerate}
+Then problem \eqref{OC} has a solution. Condition \ref{cond_obj} is satisfied in particular if the objective function has the following shape:
+\begin{equation} \label{discount} \tag{DO}
+  f_t(x_t, u_t) = \beta^t \tilde{f}_t(x_t, u_t)
+\end{equation}
+where $0 \leq \beta  < 1$ is a discount factor and $\tilde{f}_t$ is uniformely bounded on $W_t$. Note that \ref{cond_constr} and \ref{cond_obj} are general conditions: in particular there is no requirement that the objective or the constraints are convex.
+
+One can also turn to general convex optimization theory to lay out conditions for existence of a solution, such as \cite{combettesConvexAnalysisMonotone2017}. We will come back to it in section \ref{enum_DT}.
+
+\bigskip
+
+Note that in macroeconomics, optimal growth model are often formulated in a slightly different way: the sequence pair $(x_t,u_t)_t$ should satisfy an inequality constraint, instead of an equality. Inada conditions are then required to ensure the set of feasible solutions is bounded. 
+
+\section{Dynamic Programming}
+
+See \cite{bertsekasDynamicProgrammingOptimal1995}
+
+\section{Duality Theory}
+
+Duality theory is widely used in convex optimization in finite dimensions. Can we extend it to infinite dimension? \cite{dechertLagrangeMultipliersInfinite1982} shows that the answer is yes, when the problem is of the form:
+\begin{equation} \label{prob_ineq}
+  \sup_{(x_t)_t} \sum_{t=0}^{\infty} f_t(x_t) \text{ s.t }h_t(x_t) \leq 0
+\end{equation}
+where $f_t$ and $h_t$ are convex, and a Slater condition is satisfied, i.e. $\exists \,x$ s.t $\sup |x| < \infty$ and
+\begin{equation}
+  \sup_t g_t(x) < 0
+\end{equation}
+
+Note that Slater condition can never be satisfied in problem \eqref{OC} if the $(g_t)_t$ are non-linear: by definition the equality constraints make it fail. 
+
+% However, if the $(g_t)_t$ are linear, then there is no need for Slater's condition and we can use duality theory on our problem? Find reference. 
+
+\bigskip
+
+\cite{combettesConvexAnalysisMonotone2017} also offer a exhaustive analysis of duality in Hilbert spaces. In particular in their section 19.3, they show how to derive the dual of a convex optimization problem, where the constraints take the shape of a bounded linear operator.
+
+
+\newpage
+\bibliography{biblio}
+
+\end{document}
